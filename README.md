@@ -10,7 +10,8 @@ or highlight their differences.
 Completed:
   * Slices
   * Maps
+  * Interfaces
   
 Interested/To Do:
   * Pointers
-  * Templates/Polymorphism
+  * Polymorphism - more interfaces
