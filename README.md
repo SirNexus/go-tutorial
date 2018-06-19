@@ -11,6 +11,8 @@ Completed:
   * Slices
   * Maps
   * Interfaces
+  * iota
+  * dots
   
 Interested/To Do:
   * Pointers
