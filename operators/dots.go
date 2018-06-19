@@ -1,7 +1,7 @@
 package main
 
 import "fmt"
-// print demonstrates that ...int takes an arbitrary number of input integers and turns them into an array
+// print demonstrates that ...int takes an arbitrary number of integer input parameters and turns them into an array
 func print(x ...int) {
 	fmt.Println(x)
 }
