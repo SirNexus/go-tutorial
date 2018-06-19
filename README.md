@@ -9,6 +9,7 @@ or highlight their differences.
 
 Completed:
   * Slices
+  * Maps
   
 Interested/To Do:
   * Pointers

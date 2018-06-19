@@ -17,7 +17,7 @@ func main() {
 	// "An attempt to fetch a map value with a key that is not present in the map will return the zero value for the type of the entries in the map."
 	fmt.Printf("fakeKey: %v\n", m["fakeKey"])
 
-	// Or you can test for existence by using multiple assignment
+	// You can test for existence by using multiple assignment
 	key, ok := m["fakeKey"]
 	fmt.Printf("exists: %v, key: %v\n", ok, key)
 
