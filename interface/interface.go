@@ -1,6 +1,7 @@
 /*
-The formatted print functions fmt.Fprint and friends take as a first argument any object that implements the io.Writer interface;
-the variables os.Stdout and os.Stderr are familiar instances.
+"The formatted print functions fmt.Fprint and friends take as a first argument any object that implements the io.Writer interface;
+the variables os.Stdout and os.Stderr are familiar instances."
+	- Effective Go (https://golang.org/doc/effective_go.html)
 
 io.Writer interface:
 
