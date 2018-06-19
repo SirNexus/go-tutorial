@@ -8,8 +8,8 @@ I approach Go coming from a background in C/C++, so I will most likely be compar
 or highlight their differences.
 
 Completed:
-  Slices
+  * Slices
   
 Interested/To Do:
-  Pointers
-  Templates/Polymorphism
+  * Pointers
+  * Templates/Polymorphism
