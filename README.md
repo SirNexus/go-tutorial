@@ -13,6 +13,8 @@ Completed:
   * Interfaces
   * iota
   * dots
+  * Concurrency
+    * Rate limiter with event-based architecture
   
 Interested/To Do:
   * Pointers
