@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/SirNexus/go-tutorial/concurrency/internal/pkg/ratelimiter/bootstrap"
+	"github.com/SirNexus/go-tutorial/concurrency/internal/pkg/ratelimiter/limiter"
 	"github.com/SirNexus/go-tutorial/concurrency/internal/pkg/ratelimiter/worker"
 )
 
@@ -17,23 +18,27 @@ type Master struct {
 
 	opts *bootstrap.Options
 	wg   *sync.WaitGroup
+
+	// limiter holds the shared state across goroutines
+	limiter *limiter.ThreadSafeLimiter
 }
 
 func NewMaster(opts *bootstrap.Options) *Master {
 	m := &Master{
-		opts: opts,
-		wg:   &sync.WaitGroup{},
+		opts:    opts,
+		wg:      &sync.WaitGroup{},
+		limiter: &limiter.ThreadSafeLimiter{},
 	}
 
 	for i := 0; i < m.opts.NumWorkers; i++ {
-		m.addWorker(i)
+		m.addWorker(i, m.limiter)
 	}
 
 	return m
 }
 
-func (m *Master) addWorker(idx int) {
-	worker := worker.NewWorker(idx)
+func (m *Master) addWorker(idx int, limiter *limiter.ThreadSafeLimiter) {
+	worker := worker.NewWorker(idx, m.opts.RPS, limiter)
 	m.workers = append(m.workers, worker)
 }
 
@@ -43,8 +48,10 @@ func (m *Master) Run() error {
 
 	m.watchInterrupt(cancel)
 
+	triggerEventChan := make(chan struct{})
+
 	for _, worker := range m.workers {
-		worker.Run(ctx, m.wg)
+		worker.Run(ctx, m.wg, triggerEventChan)
 	}
 
 	fmt.Println("Press enter to send a request: ")
@@ -54,7 +61,8 @@ func (m *Master) Run() error {
 		if err != nil {
 			return err
 		}
-		fmt.Println("Great job!")
+
+		triggerEventChan <- struct{}{}
 	}
 }
 
@@ -66,7 +74,6 @@ func (m *Master) watchInterrupt(cancel context.CancelFunc) {
 		for {
 			select {
 			case <-cancelChan:
-				log.Println("Cancel interrupt found")
 				cancel()
 				m.wg.Wait()
 				os.Exit(0)
